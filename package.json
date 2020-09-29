@@ -1,0 +1,14 @@
+{
+  "name": "fampay",
+  "version": "1.0.0",
+  "description": "Fampay Internship Task",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/local-auth": "^1.0.0",
+    "google-auth-library": "^6.1.0",
+    "googleapis": "^60.0.1"
+  }
+}
