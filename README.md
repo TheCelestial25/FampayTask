@@ -17,9 +17,10 @@ $ npm install
 ```sh
 $ npm run
 ```
+6. Authenticate through the browser when redirected.
 
 ### Testing
-* You can test the GET response using Postman or your browser. Eg -
+* You can test the paginated GET response using Postman or your browser. Eg -
 ```sh
 $ localhost:8000/?page=1&limit=5
 ```
