@@ -2,7 +2,9 @@
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 // replace with "<your-connection-string/db-name"
-mongoose.connect("mongodb://localhost:27017/fampay-demo");
+mongoose.connect("mongodb://localhost:27017/fampay-demo").catch(console.error);
+const express = require('express');
+const app = express();
 
 
 const videoSchema = new mongoose.Schema({
@@ -11,6 +13,7 @@ const videoSchema = new mongoose.Schema({
     published: Date,
     thumbnail: String,
 });
+
 const Video = mongoose.model("Videos", videoSchema);
 
 async function saveInDB (video_array) {
@@ -28,5 +31,18 @@ async function saveInDB (video_array) {
 		});
 	});
 }
+
+app.listen(3000, function() {
+  console.log('listening on 3000')
+});
+
+app.get('/', function (req, res) {
+	var records = mongoose.model('Videos', videoSchema);
+	records.find({ }).sort('-published').exec(function (err, result) {
+		if (err) return handleError(err);
+		console.log(result);
+		res.json(result);
+	})
+})
 
 module.exports = saveInDB;
