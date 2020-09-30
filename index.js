@@ -1,29 +1,41 @@
 'use strict';
+const saveInDB = require('./db.js');
 
+// YouTubeAPI requirements
 const {google} = require('googleapis');
 const path = require('path');
 const {authenticate} = require('@google-cloud/local-auth');
-
-// initialize the Youtube API library
 const youtube = google.youtube('v3');
 
-// a very simple example of searching for youtube videos
-async function runSample() {
-  const auth = await authenticate({
-    keyfilePath: path.join(__dirname, '/oauth2.keys.json'),
-    scopes: ['https://www.googleapis.com/auth/youtube'],
-  });
-  google.options({auth});
+async function runServer() {
+	// Google oauth
+	const auth = await authenticate({
+		keyfilePath: path.join(__dirname, '/oauth2.keys.json'),
+		scopes: ['https://www.googleapis.com/auth/youtube'],
+	});
+	google.options({auth});
 
-  const res = await youtube.search.list({
-    part: 'id,snippet',
-    q: 'bbs',
-    type: 'video'
-  });
-  console.log(res.data.items[0].snippet);
+	// call main function after oauth
+	saveSearch().catch(console.error);
+} 
+ 
+async function saveSearch() {
+	var done = false;
+	await youtube.search.list({
+		part: 'id,snippet',
+		q: 'dogs',
+		type: 'video',
+		maxResults: 5,
+	}).then( result => {
+		console.log("Got the results, now trying to save in db.");
+		saveInDB(result.data.items);
+		done = true;
+	}).catch(e => {
+		console.log(e);
+	});
+
+	if(done)
+		setTimeout(saveSearch, 10000);
 }
 
-if (module === require.main) {
-  runSample().catch(console.error);
-}
-module.exports = runSample;
+runServer().catch(console.error);
