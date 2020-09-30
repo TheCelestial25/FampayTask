@@ -37,8 +37,10 @@ app.listen(3000, function() {
 });
 
 app.get('/', function (req, res) {
+	const { page = 1, limit = 10 } = req.query;
 	var records = mongoose.model('Videos', videoSchema);
-	records.find({ }).sort('-published').exec(function (err, result) {
+	records.find({ }).limit(limit * 1).skip((page - 1) * limit)
+	.sort('-published').exec(function (err, result) {
 		if (err) return handleError(err);
 		console.log(result);
 		res.json(result);
