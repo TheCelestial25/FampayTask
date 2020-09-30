@@ -45,7 +45,7 @@ async function saveSearch() {
 			console.log("Got the results, now trying to save in db.");
 			console.log(result.data.items);
 			latestPublished = updateDate(result.data.items[0].snippet.publishedAt);
-			saveInDB(result.data.items);
+			// saveInDB(result.data.items);
 		}
 		else {
 			console.log("No new videos found.");

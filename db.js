@@ -32,8 +32,8 @@ async function saveInDB (video_array) {
 	});
 }
 
-app.listen(3000, function() {
-  console.log('listening on 3000')
+app.listen(8000, function() {
+  console.log('listening on 8000')
 });
 
 app.get('/', function (req, res) {
@@ -45,6 +45,6 @@ app.get('/', function (req, res) {
 		console.log(result);
 		res.json(result);
 	})
-})
+});
 
 module.exports = saveInDB;
